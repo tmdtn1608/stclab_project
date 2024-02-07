@@ -1,0 +1,83 @@
+#!/usr/bin/env node
+// shebang set
+
+// ./k8s-patch-app -n deployment-name -p '[{"op": "replace", "path": "/Users/seungsubaek/test", "value":"2"}]'
+// op -> command type
+// path -> namespace가 정의되어있는 yaml경로?  
+// value -> replicas cnt
+const yargs = require('yargs');
+const k8s = require('@kubernetes/client-node');
+const fs = require('fs');
+const yaml = require('js-yaml');
+
+const kc = new k8s.KubeConfig();
+kc.loadFromDefault();
+const k8sApi = kc.makeApiClient(k8s.AppsV1Api);
+
+// arg set
+const argv = yargs
+  .option('n', {
+    alias: 'deployment',
+    describe: 'deployment',
+    demandOption: true
+  })
+  .option('p', {
+    alias: 'json',
+    describe: 'k8s json patch',
+    demandOption: true
+  })
+  .argv;
+
+// deployment 이름
+const deploymentName = argv.deployment;
+// JSON 
+const jsonArg = JSON.parse(argv.json);
+
+
+try {
+  jsonArg.forEach(item => {
+    const path = item['path'];
+    const value = item['value'];
+
+    const fileContents = fs.readFileSync(path +'.yaml');
+    const data = yaml.load(fileContents);
+    const namespace = data.metadata.name;
+
+    // op에 따라서 분기한다면....?
+    switch (item['op']) {
+      case 'replace':
+        replace(namespace, deploymentName, value);
+        break;
+      case 'else' :
+      default :
+        nothing(); // 빈 함수라도 쓰자.
+        break;
+    }
+
+  });
+
+} catch (error) {
+  console.error('Parsing Error', error);
+}
+
+function replace(namespace, deploy, replicas) {
+  // console.log(`replace function called check : ${namespace} / ${deploy} / ${replicas}`);
+  const changedScale = {
+    spec: {
+      replicas: replicas
+    }
+  };
+
+  k8sApi.patchNamespacedDeploymentScale(deploy,namespace,changedScale)
+  .then((response) => {
+    console.log(`${namespace}/${deploy} scale changed : ${replicas}`);
+  })
+  .catch((e) => {
+    console.error('Change scale error:', e);
+  });
+
+}
+
+function nothing() {
+  // 빈 함수
+}
