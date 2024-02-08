@@ -3,6 +3,16 @@
 ## 과제1
 
 - 해당 레포지토리의 소스코드
+- 사용법 : 해당 프로젝트 root경로로 이동한 다음, 다음과 같이 커맨드 실행.
+  ```
+  ./k8s-patch-app -n deployment-name -p '[{"op": "replace", "path": "/Users/seungsubaek/test", "value":"2"}]'
+  ```
+- parameter
+  - -n : deploy name
+  - -p : json parameter
+    - op : 커맨드. 현재 replace만 구현
+    - path : 네임스페이스가 정의되어있는 파일명 경로. 절대경로로 작성하며, 확장자를 제외한 파일명까지 명기.
+    - value : replicas Count
 
 ## 과제2
 
