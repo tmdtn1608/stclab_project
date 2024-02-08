@@ -20,7 +20,7 @@
 3. 구조
    - 모놀리식 구조. web-app의 경우 별도 web 서버가 존재하는줄 알았으나 wave-autoscale내 web_app_runner에서 노드의 설치여부를 확인한 후 node 커맨드로 실행하고 있다는 점, web-app에서 axios의 baseURL이 없다는 점으로 볼때 결국 wave-autoscale가 같은 서버에서 모든 application을 실행하고 있음이 확실하다.
 4. 의견
-   - post*metrics_receiver 함수 내에 if문으로 조건절을 작성했는데 조건이 명확하다면 if문 대신 match문으로 교체해도 괜찮을것 같습니다.
-     (열거형과 같이 명확한 값은 switch ~ case → rust에선 match, 범위와 같이 명확하지 않은 값은 if ~ elseif ~ else 문을 쓰는것을 “*개인적\_”으로 선호합니다)
+   - post_metrics_receiver 함수 내에 if문으로 조건절을 작성했는데 조건이 명확하다면 if문 대신 match문으로 교체해도 괜찮을것 같습니다.
+     (열거형과 같이 명확한 값은 switch ~ case → rust에선 match, 범위와 같이 명확하지 않은 값은 if ~ elseif ~ else 문을 쓰는것을 “개인적”으로 선호합니다)
    - log파일에서 set_info, set_debug, set_quiet 세개의 함수가 log level에 따라 나눈것이며 log level에 따라 실행할 기능을 존재하지 않는다면, level값만 인자값으로 받고 하나의 함수에서 실행하는것도 괜찮다고 생각합니다.
    - data_layer.rs파일이 너무 방대해보입니다. 도메인에 따라 모듈화시키는게 좋지않을까 생각합니다.
