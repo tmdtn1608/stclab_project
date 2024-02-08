@@ -7,7 +7,12 @@
 ## 과제2
 
 1. 기본적으로 크게 5개의 directory로 구성.
-   이중 실질적으로 기능을 하는 파트는 4개. - api-server : back-end api server - data-layer : DB 연동 모듈 - wave-autoscale : 메인모듈 - web-app : front-end react&next.js - utils : 공통 설정파일에 대한 정의(wave-config.yaml)
+   이중 실질적으로 기능을 하는 파트는 4개.
+   - api-server : back-end api server
+   - data-layer : DB 연동 모듈
+   - wave-autoscale : 메인모듈
+   - web-app : front-end react&next.js
+   - utils : 공통 설정파일에 대한 정의(wave-config.yaml)
 2. 각 repository에 대한 기능
    1. wave-autoscale : 메인이 되는 모듈. log설정 및 config의 내용을 기반으로 data-layer, api-server, web-app과 main application을 실행시키고 있다.
       → data-layer가 실행될 때 Arc를 통해 동시성 제어를 하고있다(_shared_data_layer)_. 또한
